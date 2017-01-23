@@ -1,0 +1,11 @@
+.FirstPage {
+  padding-top: 100px;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.col-md-6{
+	text-align: left;
+}

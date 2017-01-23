@@ -11,6 +11,7 @@ import Deu from './Deu';
 import Trans from './Trans';
 import Deu161201 from './Deu161201';
 import Notiz from './Notiz';
+import INApp from './INApp/INApp';
 
 import TarotHomePage from './tarot/TarotHomePage';
 import SingleCardPage from './tarot/SingleCardPage';
@@ -87,6 +88,11 @@ class App extends Component {
       return <MessageBoard />;
     }
 
+    if (this.state.route === '/inapp') {
+    //return <HomePage />;
+    return <INApp />;
+    }
+
     if (this.state.route.startsWith('/articles/')) {
       const id = this.state.route.split('/articles/')[1];
       return <SingleArticlePage id={id} />;
@@ -141,7 +147,7 @@ class App extends Component {
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li className="active"><a href="#">Link <span className="sr-only">(current)</span></a></li>
-                <li><a href="#">LinkA</a></li>
+                <li><a href="#/net">About Us</a></li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
                   <ul className="dropdown-menu">
@@ -204,9 +210,8 @@ class App extends Component {
                 <li><a href="#/">Home 首頁</a></li>
                 <li><a href="#/tarot/home">Tarot 塔羅</a></li>
                 <li><a href="#/msgbd">MessageBoard</a></li>
-                <li><a href="#/deu">Web bookmarks</a></li>
+                <li><a href="#/inapp">Web bookmarks</a></li>
                 <li><a href="#/trans">Trans 數字轉換</a></li>
-                <li><a href="#/net">About us 關於我們</a></li>
 
               </ol>
             </div>

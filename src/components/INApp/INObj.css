@@ -1,0 +1,44 @@
+.obj-link {
+	display: inline-block;
+	margin: 2px 4px 2px 4px;
+	border-radius: 10px;
+	padding-top: 2px;
+	padding-left: 4px;
+	width: 275px;
+	height: 30px;
+	background-color: black;
+	text-align: center;
+	font-size: 20px;
+	font-family: Verdana;
+}
+
+/*
+a {
+	text-decoration: none;
+}
+
+a:link {
+	color: pink;
+}
+
+a:visited {
+	color: white;
+}
+
+a:hover {
+	color: yellow;
+}
+*/
+
+.delete {
+	float: right;
+	width: 24px;
+	height: 24px;
+	background-color: Transparent;
+	border: none;
+	text-align: center;
+	font-size: 20px;
+	font-family: Verdana;
+	color: orange;
+	cursor: pointer;
+}

@@ -141,7 +141,7 @@ class App extends Component {
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li className="active"><a href="#">Link <span className="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
+                <li><a href="#">LinkA</a></li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
                   <ul className="dropdown-menu">
@@ -156,7 +156,7 @@ class App extends Component {
                 </li>
               </ul>
               <ul className="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
+                <li><a href="#">Sign in</a></li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
                   <ul className="dropdown-menu">
@@ -192,9 +192,11 @@ class App extends Component {
 
           <div className="col-sm-3 col-sm-offset-1 blog-sidebar">
             <div className="sidebar-module sidebar-module-inset">
+              <p><a className="btn btn-success btn-lg" href="#/articles" role="button">文章列表</a></p>
+              <p><a className="btn btn-success btn-lg" href="#/articles/new" role="button">發表新文章</a></p>
               <h4>About Me</h4>
-              <h5>Net</h5>
-              <p>喜愛學習德文，分享德語學習心得。</p>
+              <h5>Member ID: net5566 </h5>
+              <p>test test</p>
             </div>
             <div className="sidebar-module">
               <h4>Archives</h4>

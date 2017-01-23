@@ -20,6 +20,8 @@
 	vertical-align: top;
 	margin: 4px 0px 4px 4px;
 	width: 512px;
+	word-wrap: break-word;
+	font: 16px serif;
 }
 
 .evenColor {
@@ -38,7 +40,7 @@
 	display: block;
 	resize: none;
 	margin: 32px 0px 4px 0px;
-	width: 574px;
+	width: 588px;
 	height: 150px;
 	border: 5px double black;
 	font: 16px serif;
@@ -48,12 +50,13 @@
 	vertical-align: top;
 	margin: 0px 4px 0px 0px;
 	width: 400px;
-	height: 24px;
+	height: 36px;
 	font: 20px serif;
 }
 
 .MessageBoard > img {
 	display: inline-block;
+	margin: 0px 4px 0px 0px;
 	cursor: pointer;
 	width: 32px;
 	height: 32px;
@@ -61,6 +64,8 @@
 
 .nowTime {
 	margin: 0 auto;
+	height: 20px;
 	text-align: center;
 	background-color: pink;
+	font: 16px serif;
 }

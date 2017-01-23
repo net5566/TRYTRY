@@ -63,7 +63,7 @@ class App extends Component {
       return <TarotHomePage />;
     }
 
-    if (this.state.route === '/tarot/casrd') {
+    if (this.state.route === '/tarot/card') {
       return <SingleCardPage />;
     }
 
@@ -141,7 +141,7 @@ class App extends Component {
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li className="active"><a href="#">Link <span className="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
+                <li><a href="#">LinkA</a></li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
                   <ul className="dropdown-menu">
@@ -156,7 +156,7 @@ class App extends Component {
                 </li>
               </ul>
               <ul className="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
+                <li><a href="#">Sign in</a></li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
                   <ul className="dropdown-menu">
@@ -172,8 +172,8 @@ class App extends Component {
           </div>
         </nav>        
         <div className="blog-header">
-          <h1 className="blog-title">In-className hackthon</h1>
-          <p className="lead blog-description">This website is from the official example template of creating a blog with Bootstrap.</p>
+          <h1 className="blog-title">Personal HomePage</h1>
+          <p className="lead blog-description">Leo Net Serena</p>
         </div>
 
         <div className="row">
@@ -192,19 +192,21 @@ class App extends Component {
 
           <div className="col-sm-3 col-sm-offset-1 blog-sidebar">
             <div className="sidebar-module sidebar-module-inset">
+              <p><a className="btn btn-success btn-lg" href="#/articles" role="button">文章列表</a></p>
+              <p><a className="btn btn-success btn-lg" href="#/articles/new" role="button">發表新文章</a></p>
               <h4>About Me</h4>
-              <h5>Net</h5>
-              <p>喜愛學習德文，分享德語學習心得。</p>
+              <h5>Member ID: net5566 </h5>
+              <p>test test</p>
             </div>
             <div className="sidebar-module">
               <h4>Archives</h4>
               <ol className="list-unstyled">
-                <li><a href="#/">Start 首頁</a></li>
-                <li><a href="#/net">Über mich 關於我</a></li>
-                <li><a href="#/deu">Deutschland 德國</a></li>
-                <li><a href="#/notiz">Deutsch Notiz 德文筆記</a></li>
+                <li><a href="#/">Home 首頁</a></li>
                 <li><a href="#/tarot/home">Tarot 塔羅</a></li>
-                <li><a href="#/msgbd">Tarot asd</a></li>
+                <li><a href="#/msgbd">MessageBoard</a></li>
+                <li><a href="#/deu">Web bookmarks</a></li>
+                <li><a href="#/trans">Trans 數字轉換</a></li>
+                <li><a href="#/net">About us 關於我們</a></li>
 
               </ol>
             </div>

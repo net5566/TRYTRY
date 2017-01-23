@@ -99,12 +99,12 @@ class SingleArticlePage extends Component {
   render() {
     const { isEditing } = this.state;
     return (
-      <div className="container">
+      <div className="blog-post">
         <div className="row">
           <div className="col-md-12">
-            <div className="page-header">
+            <h2 className="blog-post-title">
               {this.renderTitle()}
-            </div>
+            </h2>
           </div>
 
         </div>

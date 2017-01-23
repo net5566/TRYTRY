@@ -22,7 +22,7 @@ render() {
 	return (
 
             <div className="blog-post">
-              <h2 className="blog-post-title">Über mich 關於我</h2>
+              <h2 className="blog-post-title">About Us</h2>
               <br />
               <h3 className="blog-post-title">Net</h3>
               <p>電機四</p>

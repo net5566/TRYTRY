@@ -1,0 +1,62 @@
+.dir-area {
+	display: inline-block;
+	margin: 2px 4px 2px 4px;
+	width: 279px;
+}
+
+.dir-link {
+	display: block;
+	margin: 0px 0px 2px 0px;
+	border-radius: 10px;
+	padding-top: 2px;
+	padding-left: 4px;
+	width: 275px;
+	height: 30px;
+	background-color: #C4F5FF;
+	text-align: center;
+	font-size: 20px;
+	font-family: Verdana;
+}
+
+.dir-area > input {
+	display: block;
+	margin: 0px 0px 2px 0px;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding-left: 4px;
+	width: 270px;
+	height: 28px;
+	font-size: 20px;
+	font-family: Courier, serif;
+}
+
+span {
+	color: #F35325;
+	cursor: pointer;
+}
+
+span:hover {
+	color: black;
+}
+
+.addBlock, .deleteGroup {
+	width: 24px;
+	height: 24px;
+	background-color: Transparent;
+	border: none;
+	text-align: center;
+	font-size: 20px;
+	font-family: monospace;
+	cursor: pointer;
+}
+
+.addBlock {
+	float: left;
+	font-weight: bolder;
+	color: white;
+}
+
+.deleteGroup {
+	float: right;
+	color: #FEC4C4;
+}

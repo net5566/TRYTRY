@@ -1,0 +1,53 @@
+.in-bar {
+	width: 515px;
+	margin: 0 auto;
+}
+
+.ftnOn, .ftnOff {
+	display: inline-block;
+	width: 120px;
+	height: 120px;
+	margin: 8px 5px 15px 5px;
+	padding: 20px;
+	border-radius: 40px	
+}
+
+.ftnOn {
+	background-color: #FF0066;
+	border: 2px solid black;
+}
+
+.ftnOff {
+	background-color: #00FFFF;
+	cursor: pointer;
+}
+
+img {
+	width: 120px;
+	height: 120px;
+}
+
+.in-bar > input {
+	display: block;
+	width: 490px;
+	height: 30px;
+	margin: 0 auto;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding-left: 4px;
+	font-size: 26px;
+	font-family: Courier, serif;
+}
+
+.in-groups, .in-blocks {
+	width: 574px;
+	margin: 15px auto;
+}
+
+.in-groups {
+	border-top: thick double purple;
+}
+
+.in-blocks {
+	border-top: thick double blue;
+}

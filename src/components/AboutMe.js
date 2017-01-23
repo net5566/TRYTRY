@@ -23,12 +23,29 @@ render() {
 
             <div className="blog-post">
               <h2 className="blog-post-title">Über mich 關於我</h2>
-
-              <p>我是Net</p>
-              <p>目前還是學生，興趣是資訊相關、日文以及德文，此網站作為一個Javascript前後端練習的實現，同時也是有鑒於台灣學習日文的風氣已經很興盛，自己也想要做個德文學習網站，來推廣一下德語。</p>
+              <br />
+              <h3 className="blog-post-title">Net</h3>
+              <p>電機四</p>
               <blockquote>
-              	<font size='1'>可是為什麼做了老半天網站還只是像個改模板的小東西QAQ </font>
-              	<strike><font size='1'>說要弄前後端結果根本都在玩CSS啊</font></strike>
+              	<font size='2'>負責整合整個頁面，做app的嵌核，還有bootstrap的維護，跟後端(很簡單的)。</font>
+                <br />
+                <strike><font size='1'>簡單來說大多時間都在處理bug跟製造新的bug</font></strike>
+                <br />
+              	<strike><font size='1'>因為頭撞到腦震盪拖延整組的進度</font></strike>
+              </blockquote>
+
+              <br />
+              <h3 className="blog-post-title">Serena</h3>
+              <p>圖資碩一</p>
+              <blockquote>
+                <font size='2'>負責前端bootstrap的設計、Tarot的維護以及報告。</font>
+              </blockquote>
+
+              <br />
+              <h3 className="blog-post-title">Leo</h3>
+              <p>電機三</p>
+              <blockquote>
+                <font size='2'>負責寫一些奇特的小APP例如留言板、網路書籤以及開發中的聊天室</font>
               </blockquote>
             </div> 
 		);

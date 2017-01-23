@@ -63,7 +63,7 @@ class App extends Component {
       return <TarotHomePage />;
     }
 
-    if (this.state.route === '/tarot/casrd') {
+    if (this.state.route === '/tarot/card') {
       return <SingleCardPage />;
     }
 
@@ -172,8 +172,8 @@ class App extends Component {
           </div>
         </nav>        
         <div className="blog-header">
-          <h1 className="blog-title">In-className hackthon</h1>
-          <p className="lead blog-description">This website is from the official example template of creating a blog with Bootstrap.</p>
+          <h1 className="blog-title">Personal HomePage</h1>
+          <p className="lead blog-description">Leo Net Serena</p>
         </div>
 
         <div className="row">
@@ -201,12 +201,12 @@ class App extends Component {
             <div className="sidebar-module">
               <h4>Archives</h4>
               <ol className="list-unstyled">
-                <li><a href="#/">Start 首頁</a></li>
-                <li><a href="#/net">Über mich 關於我</a></li>
-                <li><a href="#/deu">Deutschland 德國</a></li>
-                <li><a href="#/notiz">Deutsch Notiz 德文筆記</a></li>
+                <li><a href="#/">Home 首頁</a></li>
                 <li><a href="#/tarot/home">Tarot 塔羅</a></li>
-                <li><a href="#/msgbd">Tarot asd</a></li>
+                <li><a href="#/msgbd">MessageBoard</a></li>
+                <li><a href="#/deu">Web bookmarks</a></li>
+                <li><a href="#/trans">Trans 數字轉換</a></li>
+                <li><a href="#/net">About us 關於我們</a></li>
 
               </ol>
             </div>

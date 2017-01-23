@@ -44,7 +44,6 @@ class ArticlesPage extends Component {
 
   render() {
     return (
-      <div className="container">
         <div className="row">
           <div className="col-md-12">
             {/* implement */}
@@ -65,7 +64,6 @@ class ArticlesPage extends Component {
             </table>
           </div>
         </div>
-      </div>
     );
   }
 }

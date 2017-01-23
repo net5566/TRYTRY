@@ -66,8 +66,7 @@ class CreateArticlePage extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="row">
+      <div className="blog-post">
           <div className="col-md-12">
             <button
               className="btn btn-info pull-right"
@@ -75,25 +74,29 @@ class CreateArticlePage extends Component {
               onClick={this.handleSubmitClick}
             >送出</button>
           </div>
-        </div>
-        <div className="row">
           <div className="col-md-12">
             {/* title */}
+            <p>title</p>
             <input onChange={this.updateTitle} />
           </div>
-        </div>
-        <div className="row">
+          <br /><br />
           <div className="col-md-12">
             {/* tags */}
+            <p>tag</p>
             <input onChange={this.updateTags} />
           </div>
-        </div>
-        <div className="row">
+          <br />
+          <br />
+          <br />
           <div className="col-md-12">
             {/* content */}
+            <p>content</p>
             <textarea onChange={this.updateContent} />
           </div>
-        </div>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
       </div>
     );
   }

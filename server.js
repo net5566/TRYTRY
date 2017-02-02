@@ -5,15 +5,30 @@ import webpack from 'webpack';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
+import passport from 'passport';
+
+
 import api from './src/api/';
 import config from './webpack.config';
 // import dbConfigFile from './config/config';
 
 // const dbConfig = dbConfigFile['development'];
+require('./server/models').connect('mongodb://127.0.0.1:27017/blog');
 
-mongoose.Promise = global.Promise;
+
+
+//mongoose.Promise = global.Promise;
 // mongoose.connect(`mongodb://127.0.0.1:${dbConfig.port}/${dbConfig.database}`);
-mongoose.connect('mongodb://127.0.0.1:27017/blog');
+//mongoose.connect('mongodb://127.0.0.1:27017/blog');
+
+
+// load passport strategies
+const localSignupStrategy = require('./server/passport/local-signup');
+const localLoginStrategy = require('./server/passport/local-login');
+passport.use('local-signup', localSignupStrategy);
+passport.use('local-login', localLoginStrategy);
+
+
 
 const port = process.env.PORT || 3000;
 
@@ -25,7 +40,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.use(passport.initialize());
+
+
 app.use(express.static('public'));
+
 
 
 app.use(require('webpack-dev-middleware')(compiler, {
@@ -35,6 +54,13 @@ app.use(require('webpack-dev-middleware')(compiler, {
   },
 }));
 
+
+// pass the authorization checker middleware
+const authCheckMiddleware = require('./server/middleware/auth-check');
+app.use('/api', authCheckMiddleware);
+
+const authRoutes = require('./server/routes/auth');
+app.use('/auth', authRoutes);
 app.use('/api', api);
 
 app.get('*', (req, res) => {

@@ -4,14 +4,15 @@ import HomePage from './HomePage';
 import ArticlesPage from './ArticlesPage';
 import SingleArticlePage from './SingleArticlePage';
 import CreateArticlePage from './CreateArticlePage';
-import UsersPage from './UsersPage';
-import SingleUserPage from './SingleUserPage';
 import AboutMe from './AboutMe';
-import Deu from './Deu';
-import Trans from './Trans';
-import Deu161201 from './Deu161201';
-import Notiz from './Notiz';
+import Trans from './trans_num/Trans';
 import INApp from './INApp/INApp';
+import { browserHistory, Router } from 'react-router';
+import regroute from './auth/routes.js'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 
 import TarotHomePage from './tarot/TarotHomePage';
 import SingleCardPage from './tarot/SingleCardPage';
@@ -38,27 +39,11 @@ class App extends Component {
       return <AboutMe />;
     }  
 
-    if (this.state.route === '/deu') {
-      return <Deu />;
-    }  
-
 
     if (this.state.route === '/trans') {
       return <Trans />;
     }
 
-    if (this.state.route === '/deu161201') {
-      return <Deu161201 />;
-    }
-
-    if (this.state.route === '/links') {
-      return <UsersPage />;
-    }
-
-    if (this.state.route.startsWith('/links/')) {
-      const id = this.state.route.split('/links/')[1];
-      return <SingleUserPage id={id} />;
-    }
 
     if (this.state.route === '/tarot/home') {
       return <TarotHomePage />;
@@ -70,10 +55,6 @@ class App extends Component {
 
     if (this.state.route === '/tarot/past-present-future') {
       return <PastPresentFuture />;
-    }
-
-    if (this.state.route === '/notiz') {
-      return <Notiz />;
     }
 
     if (this.state.route === '/articles') {
@@ -186,8 +167,9 @@ class App extends Component {
 
           <div className="col-sm-8 blog-main">
           
-          {this.renderRoute()}
-
+<MuiThemeProvider muiTheme={getMuiTheme()}>
+    <Router history={browserHistory} routes={regroute} />
+  </MuiThemeProvider>
             <nav>
               <ul className="pager">
                 <li><a href="#">Home</a></li>

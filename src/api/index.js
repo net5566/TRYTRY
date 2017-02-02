@@ -1,6 +1,6 @@
 import { Router } from 'express';
-
 import articleRouter from './article';
+import messageBlockRouter from './message-block';
 
 const router = new Router();
 
@@ -226,7 +226,7 @@ router.get('/random3', (req, res) => {
   res.json(result);
 });
 
-
 router.use('/articles', articleRouter);
+router.use('/message_blocks', messageBlockRouter);
 
 export default router;

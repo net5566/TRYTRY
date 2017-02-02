@@ -12,23 +12,23 @@
 	font-family: Verdana;
 }
 
-/*
-a {
+
+.obj-link > a {
 	text-decoration: none;
 }
 
-a:link {
+.obj-link > a:link {
 	color: pink;
 }
 
-a:visited {
+.obj-link > a:visited {
 	color: white;
 }
 
-a:hover {
+.obj-link > a:hover {
 	color: yellow;
 }
-*/
+
 
 .delete {
 	float: right;

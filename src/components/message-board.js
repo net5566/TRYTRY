@@ -12,7 +12,7 @@ const emojiOut = emotionIn => {
 const isOdd = orderIn => {
   if (orderIn % 2 === 1) return 'oddColor';
   return 'evenColor';
-}
+};
 
 const MessageBlock = ({
   orderIn,
@@ -61,11 +61,31 @@ class MessageBoard extends Component {
     this.blockCreate = this.blockCreate.bind(this);
   }
   componentDidMount() {
+    fetch('/api/message_blocks')
+    .then(res => res.json())
+    .then(dataIn => {
+      const { blockArr } = this.state;
+      for (let i = 0, j = dataIn.length; i < j; i += 1) {
+        blockArr.push(
+          <MessageBlock
+            key={`message-left number ${blockArr.length}`}
+            orderIn={blockArr.length}
+            textIn={dataIn[i].textIn}
+            visitorIn={dataIn[i].visitorIn}
+            timeIn={dataIn[i].timeIn}
+            emotionIn={dataIn[i].emotionIn}
+          />
+        );
+      }
+    }).catch(e => console.log('error: something went wrong', e));
+
     this.startTick = setInterval(() => {
       this.setState({ nowTime: new Date() });
     }, 1000);
+    this.setState({ nowTime: new Date() });
   }
   componentWillUnmount() { clearInterval(this.startTick); }
+
   blockCreate(emotionStr) {
     return (() => {
       this.visitorText = this.visitorText.trim();
@@ -83,12 +103,27 @@ class MessageBoard extends Component {
           emotionIn={emotionStr}
         />
       );
+      const body = JSON.stringify({
+        visitorIn: this.visitorName,
+        textIn: this.visitorText,
+        emotionIn: emotionStr,
+        timeIn: nowTime.toString(),
+      });
+      fetch('/api/message_blocks', {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body,
+      }).then(res => res.json())
+      .then(dataIn => {
+        console.log(dataIn);
+      }).catch(e => console.log('error: something went wrong', e));
       this.setState({ nowTime: new Date() });
     });
   }
 
-
-  
   render() {
     return (
       <div className="MessageBoard">
@@ -109,6 +144,5 @@ class MessageBoard extends Component {
     );
   }
 }
-
 
 export default MessageBoard;

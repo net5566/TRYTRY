@@ -5,8 +5,8 @@
 
 .ftnOn, .ftnOff {
 	display: inline-block;
-	width: 120px;
-	height: 120px;
+	width: 160px;
+	height: 160px;
 	margin: 8px 5px 15px 5px;
 	padding: 20px;
 	border-radius: 40px	
@@ -22,7 +22,7 @@
 	cursor: pointer;
 }
 
-img {
+.in-bar img {
 	width: 120px;
 	height: 120px;
 }
@@ -40,7 +40,7 @@ img {
 }
 
 .in-groups, .in-blocks {
-	width: 574px;
+	width: 852px;
 	margin: 15px auto;
 }
 

@@ -1,9 +1,9 @@
-import Base from './components/Base.js';
-import HomePage from './components/HomePage.js';
-import DashboardPage from './containers/DashboardPage.js';
-import LoginPage from './containers/LoginPage.js';
-import SignUpPage from './containers/SignUpPage.js';
-import Auth from './modules/Auth';
+import Base from './Base.js';
+import HomePage from './auth/components/HomePage.js';
+import DashboardPage from './auth/containers/DashboardPage.js';
+import LoginPage from './auth/containers/LoginPage.js';
+import SignUpPage from './auth/containers/SignUpPage.js';
+import Auth from './auth/modules/Auth';
 
 
 const routes = {

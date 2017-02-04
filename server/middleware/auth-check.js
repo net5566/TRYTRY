@@ -11,6 +11,8 @@ module.exports = (req, res, next) => {
     return res.status(401).end();
   }
 
+  console.log('middleware!!!');
+
   // get the last part from a authorization header string like "bearer token-value"
   const token = req.headers.authorization.split(' ')[1];
 

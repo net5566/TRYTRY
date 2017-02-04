@@ -57,7 +57,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 // pass the authorization checker middleware
 const authCheckMiddleware = require('./server/middleware/auth-check');
-app.use('/api', authCheckMiddleware);
+app.get('/api', authCheckMiddleware);
 
 const authRoutes = require('./server/routes/auth');
 app.use('/auth', authRoutes);

@@ -17,7 +17,7 @@ const Main = ({ children }) => (
 
             <nav>
               <ul className="pager">
-                <li><a href="#">Home</a></li>
+                <li><Link to='/home'>Home</Link></li>
               </ul>
             </nav>
 
@@ -25,8 +25,8 @@ const Main = ({ children }) => (
 
           <div className="col-sm-3 col-sm-offset-1 blog-sidebar">
             <div className="sidebar-module sidebar-module-inset">
-              <p><a className="btn btn-success btn-lg" href="/articles" role="button">文章列表</a></p>
-              <p><a className="btn btn-success btn-lg" href="/articles/new" role="button">發表新文章</a></p>
+              <p><Link className="btn btn-success btn-lg" to="/articles" role="button">文章列表</Link></p>
+              <p><Link className="btn btn-success btn-lg" to="/articles/new" role="button">發表新文章</Link></p>
               <h4>About Me</h4>
               <h5>Member ID: {jwt_decode(localStorage.getItem('token')).name} </h5>
               <p>test test</p>

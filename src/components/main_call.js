@@ -2,7 +2,7 @@ import React , { Component } from 'react';
 import ReactDom from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { browserHistory, Router } from 'react-router';
-import routes from './main_routes.js';
+import routes from './base_routes.js';
 
 
 class Main_Call extends Component {

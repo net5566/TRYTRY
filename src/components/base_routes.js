@@ -1,4 +1,5 @@
 import Base from './Base.js';
+import Main_Call from './main_call.js';
 import HomePage from './auth/components/HomePage.js';
 import DashboardPage from './auth/containers/DashboardPage.js';
 import LoginPage from './auth/containers/LoginPage.js';
@@ -15,7 +16,7 @@ const routes = {
       path: '/',
       getComponent: (location, callback) => {
         if (Auth.isUserAuthenticated()) {
-          callback(null, DashboardPage);
+          callback(null, Main_Call);
         } else {
           callback(null, HomePage);
         }
@@ -30,6 +31,14 @@ const routes = {
     {
       path: '/signup',
       component: SignUpPage
+    },
+
+    {
+      path: '/home',
+      onEnter: (nextState, replace) => {
+        // change the current URL to /
+        replace('/');
+      }
     },
 
     {

@@ -1,15 +1,11 @@
 import React , { Component } from 'react';
 import ReactDom from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { browserHistory, Router } from 'react-router';
-import routes from './base_routes.js';
+import routes from './main_routes.js';
 
-// remove tap delay, essential for MaterialUI to work properly
-injectTapEventPlugin();
 
-class App extends Component {
+class Main_Call extends Component {
   state = {
     route: window.location.hash.substr(1),
   };
@@ -25,12 +21,12 @@ class App extends Component {
 
   render(){
     return(
-        <MuiThemeProvider muiTheme={getMuiTheme()}>
-    <Router history={browserHistory} routes={routes} />
-  </MuiThemeProvider>
+        <div>
+          <Router history={browserHistory} routes={routes} />
+        </div>
       );
   }
 
 }
 
-export default App;
+export default Main_Call;

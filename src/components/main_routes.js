@@ -3,7 +3,7 @@ import HomePage from './HomePage.js';
 import INApp from './INApp/INApp';
 import Trans from './trans_num/Trans';
 import Auth from './auth/modules/Auth';
-import MessageBoard from './message-board';
+import MessageBoard from './msgbd/message-board';
 //import ArticlesPage from './ArticlesPage';
 //import SingleArticlePage from './SingleArticlePage';
 import CreateArticlePage from './Articles/CreateArticlePage';

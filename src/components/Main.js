@@ -3,9 +3,9 @@ import { Link, IndexLink } from 'react-router';
 import Auth from './auth/modules/Auth';
 
 const jwt_decode = require('jwt-decode');
-const token = localStorage.getItem('token');
-const user_data = jwt_decode(token);
-const user_name = user_data.name;
+//const token = localStorage.getItem('token');
+//const user_data = jwt_decode(token);
+//const user_name = user_data.name;
 
 const Main = ({ children }) => (
 
@@ -28,7 +28,7 @@ const Main = ({ children }) => (
               <p><a className="btn btn-success btn-lg" href="/articles" role="button">文章列表</a></p>
               <p><a className="btn btn-success btn-lg" href="/articles/new" role="button">發表新文章</a></p>
               <h4>About Me</h4>
-              <h5>Member ID: {user_name} </h5>
+              <h5>Member ID: {jwt_decode(localStorage.getItem('token')).name} </h5>
               <p>test test</p>
             </div>
             <div className="sidebar-module">

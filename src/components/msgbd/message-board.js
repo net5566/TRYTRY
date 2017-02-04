@@ -27,7 +27,7 @@ const MessageBlock = ({
       <br /><br />
       {timeIn}
     </div>
-    <img src={`./dist/png_512/${emojiOut(emotionIn)}.png`} />
+    <img src={`../dist/png_512/${emojiOut(emotionIn)}.png`} />
   </div>
 );
 MessageBlock.defaultProps = {
@@ -134,11 +134,11 @@ class MessageBoard extends Component {
         <input placeholder="Nickname, please." onKeyUp={e => {
           this.visitorName = e.target.value;
         }} />
-        <img src="./dist/png_512/1f603.png" onClick={this.blockCreate('happy')} />
-        <img src="./dist/png_512/1f62f.png" onClick={this.blockCreate('surprised')} />
-        <img src="./dist/png_512/1f61e.png" onClick={this.blockCreate('sad')} />
-        <img src="./dist/png_512/1f621.png" onClick={this.blockCreate('angry')} />
-        <img src="./dist/png_512/1f6ab.png" onClick={this.blockCreate('no preference')} />
+        <img src="../dist/png_512/1f603.png" onClick={this.blockCreate('happy')} />
+        <img src="../dist/png_512/1f62f.png" onClick={this.blockCreate('surprised')} />
+        <img src="../dist/png_512/1f61e.png" onClick={this.blockCreate('sad')} />
+        <img src="../dist/png_512/1f621.png" onClick={this.blockCreate('angry')} />
+        <img src="../dist/png_512/1f6ab.png" onClick={this.blockCreate('no preference')} />
         <div className="nowTime">{this.state.nowTime.toString()}</div>
       </div>
     );

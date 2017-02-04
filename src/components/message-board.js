@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import 'isomorphic-fetch';
 import './message.css';
 
 const emojiOut = emotionIn => {
@@ -77,12 +78,12 @@ class MessageBoard extends Component {
           />
         );
       }
+      this.setState({ nowTime: new Date() });
     }).catch(e => console.log('error: something went wrong', e));
 
     this.startTick = setInterval(() => {
       this.setState({ nowTime: new Date() });
     }, 1000);
-    this.setState({ nowTime: new Date() });
   }
   componentWillUnmount() { clearInterval(this.startTick); }
 

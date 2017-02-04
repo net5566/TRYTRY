@@ -1,4 +1,5 @@
 import React from 'react';
+import 'isomorphic-fetch';
 import './INDir.css';
 import INObj from './INObj';
 
@@ -9,16 +10,46 @@ class INDir extends React.Component {
       elementArr: [],
       show: 0,
     };
+
     this.delBlock = this.delBlock.bind(this);
     this.add = this.add.bind(this);
     this.blockCreate = this.blockCreate.bind(this);
   }
 
+  componentDidMount() {
+    const { elementArr } = this.props;
+    for (let i = 0, j = elementArr.length; i < j; i += 1) {
+      if (typeof elementArr[i] === 'undefined') this.state.elementArr.push(undefined);
+      else this.state.elementArr.push(
+        <INObj
+          key={`${this.props.nm} block ${i}`}
+          nm={elementArr[i].nm}
+          url={elementArr[i].url}
+          del={this.delBlock(i)}
+        />
+      );
+    }
+  }
+
   delBlock(index) {
-    const { elementArr } = this.state;
+    const { elementArr, hashKey } = this.props;
+    const body = JSON.stringify({
+      action: 'pull',
+      nm: elementArr[index].nm,
+      url: elementArr[index].url,
+    });
     return (() => {
+      fetch(`/api/in_app/dir/${hashKey}`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'PUT',
+        body,
+      });
       delete elementArr[index];
-      this.setState({ show: this.state.show });
+      delete this.state.elementArr[index];
+      this.setState({});
     });
   }
 
@@ -28,10 +59,32 @@ class INDir extends React.Component {
       e.target.value = '';
       const oldBlock = this.props.fetcher(tmpMsg);
       if (typeof oldBlock !== 'undefined') {
-      	const { elementArr } = this.state;
-      	const { nm, url } = oldBlock.props;
-      	const id = elementArr.length;
-        elementArr.push(<INObj key={id} nm={nm} url={url} del={this.delBlock(id)} />);
+        const { elementArr } = this.state;
+        const { nm, url } = oldBlock.props;
+        const id = elementArr.length;
+        const body = JSON.stringify({
+          action: 'push',
+          nm: nm,
+          url: url,
+        });
+        fetch(`/api/in_app/dir/${this.props.hashKey}`, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'PUT',
+          body,
+        });
+        this.props.elementArr.push({ nm: nm, url: url });
+        elementArr.push(
+          <INObj
+            key={`${this.props.nm} block ${id}`}
+            nm={nm}
+            url={url}
+            del={this.delBlock(id)}
+          />
+        );
+        this.setState({});
       }
     }
   }

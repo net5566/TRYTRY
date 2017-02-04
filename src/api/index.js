@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import articleRouter from './article';
 import messageBlockRouter from './message-block';
+import inAppRouter from './in-app';
 
 const router = new Router();
 
@@ -228,5 +229,6 @@ router.get('/random3', (req, res) => {
 
 router.use('/articles', articleRouter);
 router.use('/message_blocks', messageBlockRouter);
+router.use('/in_app', inAppRouter);
 
 export default router;

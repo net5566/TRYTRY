@@ -1,4 +1,5 @@
 import React from 'react';
+import 'isomorphic-fetch';
 import './INApp.css';
 import INDir from './INDir';
 import INObj from './INObj';
@@ -27,10 +28,13 @@ class INApp extends React.Component {
       groupArr: [],
       findArr: [],
       findDirArr: [],
-      keptStr: '',
       ftnOn: 0,
       isURL: false,
     };
+
+    this.keptStr = '';
+    this.blockHashKey = new Array();
+
     this.imgClass = this.imgClass.bind(this);
     this.modeClick = this.modeClick.bind(this);
     this.inputCreate = this.inputCreate.bind(this);
@@ -40,6 +44,45 @@ class INApp extends React.Component {
     this.keyJudge = this.keyJudge.bind(this);
     this.showBlocks = this.showBlocks.bind(this);
     this.showGroups = this.showGroups.bind(this);
+  }
+
+  componentDidMount() {
+    fetch('/api/in_app/dirs')
+    .then(res => res.json())
+    .then(dataIn => {
+      const { groupArr } = this.state;
+      for (let i = 0, j = dataIn.length; i < j; i += 1) {
+        groupArr.push(
+          <INDir
+            key={`base group ${i}`}
+            hashKey={dataIn[i]._id}
+            nm={dataIn[i].nm}
+            elementArr={dataIn[i].elementArr}
+            fetcher={this.transBlock}
+            del={this.delGroup(i)}
+          />
+        );
+      }
+      this.setState({});
+    }).catch(e => console.log('error: dirInit went wrong', e));
+
+    fetch('/api/in_app/objs')
+    .then(res => res.json())
+    .then(dataIn => {
+      const { blockArr } = this.state;
+      for (let i = 0, j = dataIn.length; i < j; i += 1) {
+        blockArr.push(
+          <INObj
+            key={`base block ${i}`}
+            nm={dataIn[i].nm}
+            url={dataIn[i].url}
+            del={this.delBlock(i)}
+          />
+        );
+        this.blockHashKey.push(dataIn[i]._id);
+      }
+      this.setState({});
+    }).catch(e => console.log('error: objInit went wrong', e));
   }
 
   imgClass(index) {
@@ -62,7 +105,7 @@ class INApp extends React.Component {
     else if (ftnOn === 1) holder += `Folder (len < ${maxLen})`;
     else if (isURL) holder += 'URL';
     else holder += `Tag (len < ${maxLen})`;
-    return <input type="text" placeholder={holder} onKeyPress={this.keyJudge} />;
+    return <input type="text" placeholder={holder} onKeyDown={this.keyJudge} />;
   }
 
   delBlock(index) {
@@ -73,8 +116,10 @@ class INApp extends React.Component {
         if ((typeof findArr[i] !== 'undefined') &&
             (blockArr[index].props.del === findArr[i].props.del)) { delete findArr[i]; break; }
       }
+      fetch(`/api/in_app/obj/${this.blockHashKey[index]}`, { method: 'DELETE' })
+      .catch(e => console.log('error: objDel went wrong', e));
       delete blockArr[index];
-      this.setState({ isURL: this.state.isURL });
+      this.setState({});
     });
   }
 
@@ -86,8 +131,10 @@ class INApp extends React.Component {
         if ((typeof findDirArr[i] !== 'undefined') &&
             (groupArr[index].props.del === findDirArr[i].props.del)) { delete findDirArr[i]; break; }
       }
+      fetch(`/api/in_app/dir/${groupArr[index].props.hashKey}`, { method: 'DELETE' })
+      .catch(e => console.log('error: dirDel went wrong', e));
       delete groupArr[index];
-      this.setState({ isURL: this.state.isURL });
+      this.setState({});
     });
   }
 
@@ -111,9 +158,33 @@ class INApp extends React.Component {
       e.target.value = '';
       if (tmpMsg === '') return;
       if (ftnOn === 1) {
-        const id = groupArr.length;
-        groupArr.push(<INDir key={id} nm={tmpMsg} fetcher={this.transBlock} del={this.delGroup(id)} />);
-        this.setState({ isURL: isURL });
+        const body = JSON.stringify({
+          nm: tmpMsg,
+          elementArr: [],
+        });
+        fetch('/api/in_app/dir', {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body,
+        }).then(res => res.json())
+        .then(dataIn => {
+          const id = groupArr.length;
+          groupArr.push(
+            <INDir
+              key={`base group ${id}`}
+              hashKey={dataIn._id}
+              nm={tmpMsg}
+              elementArr={[]}
+              fetcher={this.transBlock}
+              del={this.delGroup(id)}
+            />
+          );
+          this.setState({});
+        }).catch(e => console.log('error: objPush went wrong', e));
+
         return;
       }
       if (ftnOn === 2) {
@@ -129,13 +200,36 @@ class INApp extends React.Component {
           if ((typeof groupArr[i] !== 'undefined') &&
               (!diff(tmpMsg, groupArr[i].props.nm))) findDirArr.push(groupArr[i]);
         }
-        this.setState({ isURL: isURL });
+        this.setState({});
         return;
       }
       if (isURL) {
-        const id = blockArr.length;
-        blockArr.push(<INObj key={id} nm={this.state.keptStr} url={tmpMsg} del={this.delBlock(id)} />);
-      } else this.state.keptStr = tmpMsg;
+        const body = JSON.stringify({
+          nm: this.keptStr,
+          url: tmpMsg,
+        });
+        fetch('/api/in_app/obj', {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body,
+        }).then(res => res.json())
+        .then(dataIn => {
+          const id = blockArr.length;
+          blockArr.push(
+            <INObj
+              key={`base block ${id}`}
+              nm={dataIn.nm}
+              url={dataIn.url}
+              del={this.delBlock(id)}
+            />
+          );
+          this.blockHashKey.push(dataIn._id);
+          this.setState({});
+        }).catch(e => console.log('error: objPush went wrong', e));
+      } else this.keptStr = tmpMsg;
       this.setState({ isURL: (isURL === false) });
     }
   }

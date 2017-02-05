@@ -1,5 +1,6 @@
 import 'isomorphic-fetch';
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 
 class ArticlesPage extends Component {
@@ -32,7 +33,7 @@ class ArticlesPage extends Component {
       c.push(
         <tr>
           <th>{i + 1}</th>
-          <th><a href={`#/articles/${this.state.list[i]._id}`}>{this.state.list[i].title}</a></th>
+          <th><Link to={`/articles/${this.state.list[i]._id}`}>{this.state.list[i].title}</Link></th>
           <th>{this.state.list[i].tags}</th>
           <th>{this.state.list[i].updated_at}</th>
           <th>{this.state.list[i].created_at}</th>

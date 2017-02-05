@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-<<<<<<< HEAD:src/components/message-board.js
-=======
 import jwt_decode from 'jwt-decode';
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22:src/components/msgbd/message-board.js
 import 'isomorphic-fetch';
 import './message.css';
 
@@ -140,18 +137,6 @@ class MessageBoard extends Component {
           this.visitorText = e.target.value;
           this.textObj = e;
         }} />
-<<<<<<< HEAD:src/components/message-board.js
-        <input placeholder="Nickname, please." onKeyUp={e => {
-          e.persist();
-          this.visitorName = e.target.value;
-          this.nameObj = e;
-        }} />
-        <img src="./dist/png_512/1f603.png" onClick={this.blockCreate('happy')} />
-        <img src="./dist/png_512/1f62f.png" onClick={this.blockCreate('surprised')} />
-        <img src="./dist/png_512/1f61e.png" onClick={this.blockCreate('sad')} />
-        <img src="./dist/png_512/1f621.png" onClick={this.blockCreate('angry')} />
-        <img src="./dist/png_512/1f6ab.png" onClick={this.blockCreate('no preference')} />
-=======
         <input
           placeholder={`${this.account}`}
           onKeyUp={e => {
@@ -165,7 +150,6 @@ class MessageBoard extends Component {
         <img src="../dist/png_512/1f61e.png" onClick={this.blockCreate('sad')} />
         <img src="../dist/png_512/1f621.png" onClick={this.blockCreate('angry')} />
         <img src="../dist/png_512/1f6ab.png" onClick={this.blockCreate('no preference')} />
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22:src/components/msgbd/message-board.js
         <div className="nowTime">{this.state.nowTime.toString()}</div>
       </div>
     );

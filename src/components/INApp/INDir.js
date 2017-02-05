@@ -32,7 +32,7 @@ class INDir extends React.Component {
   }
 
   delBlock(index) {
-    const { elementArr, hashKey } = this.props;
+    const { elementArr, hashKey, pushAfterPull } = this.props;
     const body = JSON.stringify({
       action: 'pull',
       nm: elementArr[index].nm,
@@ -46,6 +46,9 @@ class INDir extends React.Component {
         },
         method: 'PUT',
         body,
+      }).then(res => res.json())
+      .then(outBlock => {
+        pushAfterPull(outBlock);
       }).catch(e => console.log('error: dirBlockPull went wrong', e));
       delete elementArr[index];
       delete this.state.elementArr[index];
@@ -90,15 +93,15 @@ class INDir extends React.Component {
   }
 
   blockCreate() {
-  	const msg = 'Enter New Members';
-  	const { show, elementArr } = this.state;
+    const msg = 'Enter New Members';
+    const { show, elementArr } = this.state;
     if (show === 1) return elementArr;
     if (show === 2) return <input type="text" placeholder={msg} onKeyPress={this.add} />;
   }
 
   render() {
-  	return (
-  	  <div className="dir-area">
+    return (
+      <div className="dir-area">
         <div className="dir-link">
           <input type="button" value="+" className="addBlock" onClick={() => {
             if (this.state.show === 2) this.setState({ show: 0 });

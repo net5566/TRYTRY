@@ -1,8 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
-=======
 import jwt_decode from 'jwt-decode';
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
 import 'isomorphic-fetch';
 import './INApp.css';
 import INDir from './INDir';
@@ -37,11 +34,9 @@ class INApp extends React.Component {
     };
 
     this.keptStr = '';
+    this.findKey = '';
     this.blockHashKey = new Array();
-<<<<<<< HEAD
-=======
-    this.account = jwt_decode(localStorage.getItem('token')).name;
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
+    this.account = jwt_decode(localStorage.getItem('token')).sub;
 
     this.imgClass = this.imgClass.bind(this);
     this.modeClick = this.modeClick.bind(this);
@@ -49,17 +44,14 @@ class INApp extends React.Component {
     this.delBlock = this.delBlock.bind(this);
     this.delGroup = this.delGroup.bind(this);
     this.transBlock = this.transBlock.bind(this);
+    this.pushAfterPull = this.pushAfterPull.bind(this);
     this.keyJudge = this.keyJudge.bind(this);
     this.showBlocks = this.showBlocks.bind(this);
     this.showGroups = this.showGroups.bind(this);
   }
 
   componentDidMount() {
-<<<<<<< HEAD
-    fetch('/api/in_app/dirs')
-=======
     fetch(`/api/in_app/dirs/${this.account}`)
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
     .then(res => res.json())
     .then(dataIn => {
       const { groupArr } = this.state;
@@ -71,6 +63,7 @@ class INApp extends React.Component {
             nm={dataIn[i].nm}
             elementArr={dataIn[i].elementArr}
             fetcher={this.transBlock}
+            pushAfterPull={this.pushAfterPull}
             del={this.delGroup(i)}
           />
         );
@@ -78,11 +71,7 @@ class INApp extends React.Component {
       this.setState({});
     }).catch(e => console.log('error: dirInit went wrong', e));
 
-<<<<<<< HEAD
-    fetch('/api/in_app/objs')
-=======
     fetch(`/api/in_app/objs/${this.account}`)
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
     .then(res => res.json())
     .then(dataIn => {
       const { blockArr } = this.state;
@@ -108,6 +97,7 @@ class INApp extends React.Component {
 
   modeClick(index) {
     if (index !== this.state.ftnOn) {
+      this.findKey = '';
       this.state.findArr.length = 0;
       this.state.findDirArr.length = 0;
       this.setState({ ftnOn: index, isURL: false });
@@ -166,6 +156,38 @@ class INApp extends React.Component {
     }
   }
 
+  pushAfterPull(extrBlock) {
+    const { nm, url } = extrBlock;
+    const { blockArr, findArr } = this.state;
+    const body = JSON.stringify({
+      user: this.account,
+      nm: nm,
+      url: url,
+    });
+    fetch('/api/in_app/obj', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body,
+    }).then(res => res.json())
+    .then(dataIn => {
+      const id = blockArr.length;
+      blockArr.push(
+        <INObj
+          key={`base block ${id}`}
+          nm={nm}
+          url={url}
+          del={this.delBlock(id)}
+        />
+      );
+      this.blockHashKey.push(dataIn._id);
+      if ((this.findKey !== '') && (!diff(this.findKey, nm))) findArr.push(blockArr[id]);
+      this.setState({});
+    }).catch(e => console.log('error: objPushAfterPull went wrong', e));
+  }
+
   keyJudge(e) {
     const { ftnOn, isURL, blockArr, groupArr, findArr, findDirArr } = this.state;
     if ((ftnOn < 2) && (!isURL)) e.target.value = e.target.value.substring(0, maxLen - 1);
@@ -175,13 +197,8 @@ class INApp extends React.Component {
       if (tmpMsg === '') return;
       if (ftnOn === 1) {
         const body = JSON.stringify({
-<<<<<<< HEAD
-          nm: tmpMsg,
-          elementArr: [],
-=======
           user: this.account,
           nm: tmpMsg,
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
         });
         fetch('/api/in_app/dir', {
           headers: {
@@ -200,6 +217,7 @@ class INApp extends React.Component {
               nm={tmpMsg}
               elementArr={[]}
               fetcher={this.transBlock}
+              pushAfterPull={this.pushAfterPull}
               del={this.delGroup(id)}
             />
           );
@@ -213,6 +231,7 @@ class INApp extends React.Component {
         const t = groupArr.length;
         findArr.length = 0;
         findDirArr.length = 0;
+        this.findKey = tmpMsg;
         for (let i = 0; i < s; i += 1) {
           if ((typeof blockArr[i] !== 'undefined') &&
               (!diff(tmpMsg, blockArr[i].props.nm))) findArr.push(blockArr[i]);
@@ -226,10 +245,7 @@ class INApp extends React.Component {
       }
       if (isURL) {
         const body = JSON.stringify({
-<<<<<<< HEAD
-=======
           user: this.account,
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
           nm: this.keptStr,
           url: tmpMsg,
         });
@@ -246,13 +262,8 @@ class INApp extends React.Component {
           blockArr.push(
             <INObj
               key={`base block ${id}`}
-<<<<<<< HEAD
-              nm={dataIn.nm}
-              url={dataIn.url}
-=======
               nm={this.keptStr}
               url={tmpMsg}
->>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
               del={this.delBlock(id)}
             />
           );

@@ -5,7 +5,12 @@
 	border-radius: 10px;
 }
 
-.MessageBlock:hover {
+.myBlock:hover {
+	cursor: pointer;
+	border: 2px dashed red;
+}
+
+.notMyBlock:hover {
 	border: 2px dashed black;
 }
 

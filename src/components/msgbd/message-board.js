@@ -3,6 +3,9 @@ import jwt_decode from 'jwt-decode';
 import 'isomorphic-fetch';
 import './message.css';
 
+let accountName = jwt_decode(localStorage.getItem('token')).name;
+let accountId = jwt_decode(localStorage.getItem('token')).sub;
+
 const emojiOut = emotionIn => {
   if (emotionIn === 'sad') return '1f61e';
   if (emotionIn === 'happy') return '1f603';
@@ -16,14 +19,20 @@ const isOdd = orderIn => {
   return 'evenColor';
 };
 
+const isMine = (user, visitorIn) => {
+  if ((user === accountId) || (visitorIn === accountName)) return 'myBlock';
+  return 'notMyBlock';
+};
+
 const MessageBlock = ({
+  user,
   orderIn,
   textIn,
   visitorIn,
   timeIn,
   emotionIn
 }) => (
-  <div className={`MessageBlock ${isOdd(orderIn)}`}>
+  <div className={`MessageBlock ${isOdd(orderIn)} ${isMine(user, visitorIn)}`}>
     <div className="MessageBody">
       "{textIn}", said {visitorIn}.
       <br /><br />
@@ -33,6 +42,7 @@ const MessageBlock = ({
   </div>
 );
 MessageBlock.defaultProps = {
+  user: '',
   visitorIn: 'admin',
   timeIn: (new Date()).toString(),
   emotionIn: 'no preference',
@@ -40,6 +50,8 @@ MessageBlock.defaultProps = {
 
 class MessageBoard extends Component {
   constructor(props) {
+    accountName = jwt_decode(localStorage.getItem('token')).name;
+    accountId = jwt_decode(localStorage.getItem('token')).sub;
     super(props);
     this.state = {
       nowTime: new Date(),
@@ -60,7 +72,6 @@ class MessageBoard extends Component {
     };
     this.visitorText = '';
     this.visitorName = '';
-    this.account = jwt_decode(localStorage.getItem('token')).name;
 
     this.blockCreate = this.blockCreate.bind(this);
   }
@@ -74,6 +85,7 @@ class MessageBoard extends Component {
         blockArr.push(
           <MessageBlock
             key={`message-left number ${blockArr.length}`}
+            user={dataIn[i].user}
             orderIn={blockArr.length}
             textIn={dataIn[i].textIn}
             visitorIn={dataIn[i].visitorIn}
@@ -96,11 +108,12 @@ class MessageBoard extends Component {
       this.visitorText = this.visitorText.trim();
       this.visitorName = this.visitorName.trim();
       if (this.visitorText === '') return;
-      if (this.visitorName === '') this.visitorName = this.account;
+      if (this.visitorName === '') this.visitorName = accountName;
       const { blockArr, nowTime } = this.state;
       blockArr.push(
         <MessageBlock
           key={`message-left number ${blockArr.length}`}
+          user={accountId}
           orderIn={blockArr.length}
           textIn={this.visitorText}
           visitorIn={this.visitorName}
@@ -109,6 +122,7 @@ class MessageBoard extends Component {
         />
       );
       const body = JSON.stringify({
+        user: accountId,
         visitorIn: this.visitorName,
         textIn: this.visitorText,
         emotionIn: emotionStr,
@@ -122,8 +136,8 @@ class MessageBoard extends Component {
         method: 'POST',
         body,
       }).catch(e => console.log('error: msgPush went wrong', e));
-      if (typeof this.textObj !== 'undefined') this.textObj.target.value = '';
-      if (typeof this.nameObj !== 'undefined') this.nameObj.target.value = '';
+      if (typeof this.textObj !== 'undefined') this.visitorText = this.textObj.target.value = '';
+      if (typeof this.nameObj !== 'undefined') this.visitorName = this.nameObj.target.value = '';
       this.setState({ nowTime: new Date() });
     });
   }
@@ -138,7 +152,7 @@ class MessageBoard extends Component {
           this.textObj = e;
         }} />
         <input
-          placeholder={`${this.account}`}
+          placeholder={`${accountName}`}
           onKeyUp={e => {
             e.persist();
             this.visitorName = e.target.value;

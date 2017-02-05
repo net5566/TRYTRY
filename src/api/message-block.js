@@ -11,8 +11,8 @@ messageBlockRouter.get('/', (req, res) => {
 });
 
 messageBlockRouter.post('/', (req, res) => {
-  const { visitorIn, textIn, emotionIn, timeIn } = req.body;
-  MessageBlock.create({ visitorIn, textIn, emotionIn, timeIn }, (err, block) => {
+  const { user, visitorIn, textIn, emotionIn, timeIn } = req.body;
+  MessageBlock.create({ user, visitorIn, textIn, emotionIn, timeIn }, (err, block) => {
     if (err) return res.status(500).send(err);
     return res.json(block);
   });

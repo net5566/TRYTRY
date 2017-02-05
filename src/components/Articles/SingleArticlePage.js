@@ -1,6 +1,7 @@
 import 'isomorphic-fetch';
 import React, { Component, PropTypes } from 'react';
 import ReactQuill from 'react-quill';
+import { Link } from 'react-router';
 
 class SingleArticlePage extends Component {
   static propTypes = {
@@ -19,7 +20,7 @@ class SingleArticlePage extends Component {
 
   componentDidMount() {
     // fetch with id
-    const id = this.props.id;
+    const id = this.props.params.id;
     fetch(`/api/articles/${id}`)
       .then(res => res.json())
       .then(json => {
@@ -47,19 +48,19 @@ class SingleArticlePage extends Component {
   };
 
   handleDelClick = () => {
-    const id = this.props.id;
+    const id = this.props.params.id;
     fetch(`/api/articles/${id}`, {
       method: 'DELETE',
     })
     .then(() => {
-      window.location.href = '#/articles';
+      window.location.href = 'localhost:3000/articles';
     });
   }
 
   handleEditClick = () => {
     if (this.state.isEditing) {
       const body = JSON.stringify(this.state);
-      const id = this.props.id;
+      const id = this.props.params.id;
       fetch(`/api/articles/${id}`, {
         headers: {
           Accept: 'application/json',

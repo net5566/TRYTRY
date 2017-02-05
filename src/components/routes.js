@@ -8,9 +8,11 @@ import NotLog from './notlog.js'
 import DashboardPage from './auth/containers/DashboardPage.js';
 import MessageBoard from './msgbd/message-board';
 
+
 import LoginPage from './auth/containers/LoginPage.js';
 import SignUpPage from './auth/containers/SignUpPage.js';
 
+import AboutMe from './AboutMe';
 import TarotHomePage from './tarot/TarotHomePage';
 import SingleCardPage from './tarot/SingleCardPage';
 import PastPresentFuture from './tarot/PastPresentFuture';
@@ -102,6 +104,11 @@ const routes = {
       {
         path: '/articles/new',
         component: CreateArticlePage
+      },
+
+      {
+        path: '/articles/:id',
+        component: SingleArticlePage
       }
 
 
@@ -124,6 +131,11 @@ const routes = {
         // change the current URL to /
         replace('/');
       }
+    },
+
+    {
+      path: '/net',
+      component: AboutMe
     },
 
     {

@@ -163,7 +163,6 @@ class INApp extends React.Component {
         const body = JSON.stringify({
           user: this.account,
           nm: tmpMsg,
-          elementArr: [],
         });
         fetch('/api/in_app/dir', {
           headers: {
@@ -225,8 +224,8 @@ class INApp extends React.Component {
           blockArr.push(
             <INObj
               key={`base block ${id}`}
-              nm={dataIn.nm}
-              url={dataIn.url}
+              nm={this.keptStr}
+              url={tmpMsg}
               del={this.delBlock(id)}
             />
           );

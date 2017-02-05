@@ -23,7 +23,7 @@ inAppRouter.post('/obj', (req, res) => {
   const { user, nm, url } = req.body;
   InObj.create({ user, nm, url }, (err, obj) => {
     if (err) return res.status(500).send(err);
-    return res.json(obj);
+    return res.json({ _id: obj._id });
   });
 });
 
@@ -32,7 +32,7 @@ inAppRouter.post('/dir', (req, res) => {
   const elementArr = new Array();
   InDir.create({ user, nm, elementArr }, (err, dir) => {
     if (err) return res.status(500).send(err);
-    return res.json(dir);
+    return res.json({ _id: dir._id });
   });
 });
 

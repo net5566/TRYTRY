@@ -46,7 +46,7 @@ class INDir extends React.Component {
         },
         method: 'PUT',
         body,
-      });
+      }).catch(e => console.log('error: dirBlockPull went wrong', e));
       delete elementArr[index];
       delete this.state.elementArr[index];
       this.setState({});
@@ -74,7 +74,7 @@ class INDir extends React.Component {
           },
           method: 'PUT',
           body,
-        });
+        }).catch(e => console.log('error: dirBlockPush went wrong', e));
         this.props.elementArr.push({ nm: nm, url: url });
         elementArr.push(
           <INObj

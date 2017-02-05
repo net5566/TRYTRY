@@ -171,7 +171,6 @@ class INApp extends React.Component {
           body,
         }).then(res => res.json())
         .then(dataIn => {
-          console.log(dataIn);
           const id = groupArr.length;
           groupArr.push(
             <INDir
@@ -218,7 +217,6 @@ class INApp extends React.Component {
           body,
         }).then(res => res.json())
         .then(dataIn => {
-          console.log(dataIn);
           const id = blockArr.length;
           blockArr.push(
             <INObj

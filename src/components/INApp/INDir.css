@@ -1,5 +1,6 @@
 .dir-area {
 	display: inline-block;
+	vertical-align: top;
 	margin: 2px 0px 2px 4px;
 	width: 279px;
 }

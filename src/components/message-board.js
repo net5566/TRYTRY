@@ -79,7 +79,7 @@ class MessageBoard extends Component {
         );
       }
       this.setState({ nowTime: new Date() });
-    }).catch(e => console.log('error: something went wrong', e));
+    }).catch(e => console.log('error: msgInit went wrong', e));
 
     this.startTick = setInterval(() => {
       this.setState({ nowTime: new Date() });
@@ -117,10 +117,9 @@ class MessageBoard extends Component {
         },
         method: 'POST',
         body,
-      }).then(res => res.json())
-      .then(dataIn => {
-        console.log(dataIn);
-      }).catch(e => console.log('error: something went wrong', e));
+      }).catch(e => console.log('error: msgPush went wrong', e));
+      if (typeof this.textObj !== 'undefined') this.textObj.target.value = '';
+      if (typeof this.nameObj !== 'undefined') this.nameObj.target.value = '';
       this.setState({ nowTime: new Date() });
     });
   }
@@ -130,10 +129,14 @@ class MessageBoard extends Component {
       <div className="MessageBoard">
         <div className="blockArr">{this.state.blockArr}</div>
         <textarea placeholder="Text here to leave a message..." onKeyUp={e => {
+          e.persist();
           this.visitorText = e.target.value;
+          this.textObj = e;
         }} />
         <input placeholder="Nickname, please." onKeyUp={e => {
+          e.persist();
           this.visitorName = e.target.value;
+          this.nameObj = e;
         }} />
         <img src="./dist/png_512/1f603.png" onClick={this.blockCreate('happy')} />
         <img src="./dist/png_512/1f62f.png" onClick={this.blockCreate('surprised')} />

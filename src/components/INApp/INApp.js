@@ -1,4 +1,5 @@
 import React from 'react';
+import jwt_decode from 'jwt-decode';
 import 'isomorphic-fetch';
 import './INApp.css';
 import INDir from './INDir';
@@ -34,6 +35,7 @@ class INApp extends React.Component {
 
     this.keptStr = '';
     this.blockHashKey = new Array();
+    this.account = jwt_decode(localStorage.getItem('token')).name;
 
     this.imgClass = this.imgClass.bind(this);
     this.modeClick = this.modeClick.bind(this);
@@ -47,7 +49,7 @@ class INApp extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/in_app/dirs')
+    fetch(`/api/in_app/dirs/${this.account}`)
     .then(res => res.json())
     .then(dataIn => {
       const { groupArr } = this.state;
@@ -66,7 +68,7 @@ class INApp extends React.Component {
       this.setState({});
     }).catch(e => console.log('error: dirInit went wrong', e));
 
-    fetch('/api/in_app/objs')
+    fetch(`/api/in_app/objs/${this.account}`)
     .then(res => res.json())
     .then(dataIn => {
       const { blockArr } = this.state;
@@ -159,6 +161,7 @@ class INApp extends React.Component {
       if (tmpMsg === '') return;
       if (ftnOn === 1) {
         const body = JSON.stringify({
+          user: this.account,
           nm: tmpMsg,
           elementArr: [],
         });
@@ -205,6 +208,7 @@ class INApp extends React.Component {
       }
       if (isURL) {
         const body = JSON.stringify({
+          user: this.account,
           nm: this.keptStr,
           url: tmpMsg,
         });

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import jwt_decode from 'jwt-decode';
 import 'isomorphic-fetch';
 import './message.css';
 
@@ -59,8 +60,11 @@ class MessageBoard extends Component {
     };
     this.visitorText = '';
     this.visitorName = '';
+    this.account = jwt_decode(localStorage.getItem('token')).name;
+
     this.blockCreate = this.blockCreate.bind(this);
   }
+
   componentDidMount() {
     fetch('/api/message_blocks')
     .then(res => res.json())
@@ -92,7 +96,7 @@ class MessageBoard extends Component {
       this.visitorText = this.visitorText.trim();
       this.visitorName = this.visitorName.trim();
       if (this.visitorText === '') return;
-      if (this.visitorName === '') this.visitorName = '(Anonymous)';
+      if (this.visitorName === '') this.visitorName = this.account;
       const { blockArr, nowTime } = this.state;
       blockArr.push(
         <MessageBlock
@@ -133,11 +137,14 @@ class MessageBoard extends Component {
           this.visitorText = e.target.value;
           this.textObj = e;
         }} />
-        <input placeholder="Nickname, please." onKeyUp={e => {
-          e.persist();
-          this.visitorName = e.target.value;
-          this.nameObj = e;
-        }} />
+        <input
+          placeholder={`${this.account}`}
+          onKeyUp={e => {
+            e.persist();
+            this.visitorName = e.target.value;
+            this.nameObj = e;
+          }}
+        />
         <img src="../dist/png_512/1f603.png" onClick={this.blockCreate('happy')} />
         <img src="../dist/png_512/1f62f.png" onClick={this.blockCreate('surprised')} />
         <img src="../dist/png_512/1f61e.png" onClick={this.blockCreate('sad')} />

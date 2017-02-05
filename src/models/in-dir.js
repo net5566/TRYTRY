@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const inDirSchema = mongoose.Schema({
+  user: String,
   nm: String,
   elementArr: [{
     nm: String,

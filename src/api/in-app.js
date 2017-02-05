@@ -3,32 +3,34 @@ import { InObj, InDir } from '../models';
 
 const inAppRouter = new Router();
 
-inAppRouter.get('/objs', (req, res) => {
-  InObj.find().exec((err, objs) => {
+inAppRouter.get('/objs/:user', (req, res) => {
+  const { user } = req.params;
+  InObj.find({ user: user }).exec((err, objs) => {
     if (err) return res.status(500).send(err);
     return res.json(objs);
   });
 });
 
-inAppRouter.get('/dirs', (req, res) => {
-  InDir.find().exec((err, dirs) => {
+inAppRouter.get('/dirs/:user', (req, res) => {
+  const { user } = req.params;
+  InDir.find({ user: user }).exec((err, dirs) => {
     if (err) return res.status(500).send(err);
     return res.json(dirs);
   });
 });
 
 inAppRouter.post('/obj', (req, res) => {
-  const { nm, url } = req.body;
-  InObj.create({ nm, url }, (err, obj) => {
+  const { user, nm, url } = req.body;
+  InObj.create({ user, nm, url }, (err, obj) => {
     if (err) return res.status(500).send(err);
     return res.json(obj);
   });
 });
 
 inAppRouter.post('/dir', (req, res) => {
-  const { nm } = req.body;
+  const { user, nm } = req.body;
   const elementArr = new Array();
-  InDir.create({ nm, elementArr }, (err, dir) => {
+  InDir.create({ user, nm, elementArr }, (err, dir) => {
     if (err) return res.status(500).send(err);
     return res.json(dir);
   });

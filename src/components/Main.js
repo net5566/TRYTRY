@@ -51,12 +51,10 @@ const Main = ({ children }) => (
               </ol>
             </div>
             <div className="sidebar-module">
-              <Forecast latitude={52.31} longitude={13.24} name='Berlin' units='si'/>
-              <Forecast latitude={53.33} longitude={10.00} name='Hamburg' units='si'/>
-              <Forecast latitude={48.80} longitude={11.34} name='München' units='si'/>
-              <Forecast latitude={50.57} longitude={6.58} name='Köln' units='si'/>
               <Forecast latitude={25.02} longitude={121.31} name='Taipei' units='si' />
-            </div>
+              <Forecast latitude={37.47} longitude={-122.25} name='San Francisco' units='si'/>
+              <Forecast latitude={40.40} longitude={-73.56} name='New York' units='si'/>
+              <Forecast latitude={35.41} longitude={139.41} name='Tokyo' units='si'/>          </div>
           </div>
 
         </div>

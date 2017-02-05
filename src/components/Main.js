@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
 import Auth from './auth/modules/Auth';
+import Forecast from 'react-forecast';
 
 const jwt_decode = require('jwt-decode');
 //const token = localStorage.getItem('token');
@@ -39,7 +40,6 @@ const Main = ({ children }) => (
                 <li><Link to="/msgbd">MessageBoard</Link></li>
                 <li><Link to="/inapp">Web bookmarks</Link></li>
                 <li><Link to="/trans">Trans 數字轉換</Link></li>
-
               </ol>
             </div>
             <div className="sidebar-module">
@@ -49,6 +49,13 @@ const Main = ({ children }) => (
                 <li><a href="#">Twitter</a></li>
                 <li><a href="#">Facebook</a></li>
               </ol>
+            </div>
+            <div className="sidebar-module">
+              <Forecast latitude={52.31} longitude={13.24} name='Berlin' units='si'/>
+              <Forecast latitude={53.33} longitude={10.00} name='Hamburg' units='si'/>
+              <Forecast latitude={48.80} longitude={11.34} name='München' units='si'/>
+              <Forecast latitude={50.57} longitude={6.58} name='Köln' units='si'/>
+              <Forecast latitude={25.02} longitude={121.31} name='Taipei' units='si' />
             </div>
           </div>
 

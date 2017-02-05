@@ -38,7 +38,7 @@ render() {
               <h3 className="blog-post-title">Serena</h3>
               <p>圖資碩一</p>
               <blockquote>
-                <font size='2'>負責前端bootstrap的設計、Tarot的維護以及報告。</font>
+                <font size='2'>負責前端bootstrap的設計、Tarot、天氣小插件以及報告。</font>
               </blockquote>
 
               <br />

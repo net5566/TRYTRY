@@ -1,4 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
+=======
+import jwt_decode from 'jwt-decode';
+>>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
 import 'isomorphic-fetch';
 import './INApp.css';
 import INDir from './INDir';
@@ -34,6 +38,10 @@ class INApp extends React.Component {
 
     this.keptStr = '';
     this.blockHashKey = new Array();
+<<<<<<< HEAD
+=======
+    this.account = jwt_decode(localStorage.getItem('token')).name;
+>>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
 
     this.imgClass = this.imgClass.bind(this);
     this.modeClick = this.modeClick.bind(this);
@@ -47,7 +55,11 @@ class INApp extends React.Component {
   }
 
   componentDidMount() {
+<<<<<<< HEAD
     fetch('/api/in_app/dirs')
+=======
+    fetch(`/api/in_app/dirs/${this.account}`)
+>>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
     .then(res => res.json())
     .then(dataIn => {
       const { groupArr } = this.state;
@@ -66,7 +78,11 @@ class INApp extends React.Component {
       this.setState({});
     }).catch(e => console.log('error: dirInit went wrong', e));
 
+<<<<<<< HEAD
     fetch('/api/in_app/objs')
+=======
+    fetch(`/api/in_app/objs/${this.account}`)
+>>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
     .then(res => res.json())
     .then(dataIn => {
       const { blockArr } = this.state;
@@ -159,8 +175,13 @@ class INApp extends React.Component {
       if (tmpMsg === '') return;
       if (ftnOn === 1) {
         const body = JSON.stringify({
+<<<<<<< HEAD
           nm: tmpMsg,
           elementArr: [],
+=======
+          user: this.account,
+          nm: tmpMsg,
+>>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
         });
         fetch('/api/in_app/dir', {
           headers: {
@@ -205,6 +226,10 @@ class INApp extends React.Component {
       }
       if (isURL) {
         const body = JSON.stringify({
+<<<<<<< HEAD
+=======
+          user: this.account,
+>>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
           nm: this.keptStr,
           url: tmpMsg,
         });
@@ -221,8 +246,13 @@ class INApp extends React.Component {
           blockArr.push(
             <INObj
               key={`base block ${id}`}
+<<<<<<< HEAD
               nm={dataIn.nm}
               url={dataIn.url}
+=======
+              nm={this.keptStr}
+              url={tmpMsg}
+>>>>>>> c354a6210b05b97bcd4a18c953ca5588218abb22
               del={this.delBlock(id)}
             />
           );

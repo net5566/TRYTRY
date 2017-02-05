@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import React, { Component } from 'react';
 
 import './home.css';
@@ -13,8 +14,8 @@ class TarotHomePage extends Component {
         <p className="pre"> Breathe deeply, focus on a question, set your intention... </p>
         <p className="pre"> And when you are ready, click on the start botton below. </p>
         <p> </p>
-        <a href="#/tarot/card" className="btn btn-warning btn-lg">Start</a>
-        <a href="#/tarot/past-present-future" className="btn btn-warning btn-lg">Past Present Future</a>
+        <Link to="/tarot/card" className="btn btn-warning btn-lg">Start</Link>
+        <Link to="/tarot/past-present-future" className="btn btn-warning btn-lg">Past Present Future</Link>
       </div>
     );
   }

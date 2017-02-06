@@ -90,7 +90,7 @@ class INApp extends React.Component {
       let tmpStr = '';
       const x = dataIn.length;
       const y = getHashSize(x);
-      const { groupArr } = this.state;
+      const { groupArr, blockArr } = this.state;
       for (let i = 0; i < y; i += 1) this.dirNameHash.push(new Array());
       for (let i = 0, x = dataIn.length; i < x; i += 1) {
         tmpStr = dataIn[i].nm;
@@ -100,39 +100,53 @@ class INApp extends React.Component {
             hashKey={dataIn[i]._id}
             nm={tmpStr}
             elementArr={dataIn[i].elementArr}
-            fetcher={this.transBlock}
+            fetcher={this.transBlock(tmpStr)}
             pushAfterPull={this.pushAfterPull}
             del={this.delGroup(i)}
           />
         );
         this.dirNameHash[hashStr(tmpStr) % y].push(tmpStr);
       }
+      fetch(`/api/in_app/objs/${this.account}`)
+      .then(res => res.json())
+      .then(innerDataIn => {
+        let tmpInnerStr = '';
+        const xx = innerDataIn.length;
+        let zz = xx; for (let i = 0; i < x; i += 1) zz += dataIn[i].elementArr.length;
+        const yy = getHashSize(zz);
+        for (let i = 0; i < yy; i += 1) this.blockNameHash.push(new Array());
+        for (let i = 0; i < x; i += 1) {
+          tmpInnerStr = dataIn[i].nm;
+          zz = dataIn[i].elementArr;
+          for (let j = 0, gg = zz.length; j < gg; j += 1)
+            this.blockNameHash[hashStr(zz[j].nm) % yy].push({
+              name: zz[j].nm,
+              location: `Directory ${tmpInnerStr}`,
+              index: 0,
+            });
+        }
+
+        for (let i = 0; i < xx; i += 1) {
+          tmpInnerStr = innerDataIn[i].nm;
+          blockArr.push(
+            <INObj
+              key={`base block ${i}`}
+              nm={tmpInnerStr}
+              url={innerDataIn[i].url}
+              del={this.delBlock(i)}
+            />
+          );
+          this.blockHashKey.push(innerDataIn[i]._id);
+          this.blockNameHash[hashStr(tmpInnerStr) % yy].push({
+            name: tmpInnerStr,
+            location: 'the base',
+            index: i,
+          });
+        }
+        this.setState({});
+      }).catch(e => console.log('error: objInit went wrong', e));
       this.setState({});
     }).catch(e => console.log('error: dirInit went wrong', e));
-
-    fetch(`/api/in_app/objs/${this.account}`)
-    .then(res => res.json())
-    .then(dataIn => {
-      let tmpStr = '';
-      const x = dataIn.length;
-      const y = getHashSize(x);
-      const { blockArr } = this.state;
-      for (let i = 0; i < y; i += 1) this.blockNameHash.push(new Array());
-      for (let i = 0; i < x; i += 1) {
-        tmpStr = dataIn[i].nm;
-        blockArr.push(
-          <INObj
-            key={`base block ${i}`}
-            nm={tmpStr}
-            url={dataIn[i].url}
-            del={this.delBlock(i)}
-          />
-        );
-        this.blockHashKey.push(dataIn[i]._id);
-        this.blockNameHash[hashStr(tmpStr) % y].push(tmpStr);
-      }
-      this.setState({});
-    }).catch(e => console.log('error: objInit went wrong', e));
   }
 
   imgClass(index) {
@@ -162,7 +176,18 @@ class INApp extends React.Component {
   delBlock(index) {
     const { blockArr, findArr } = this.state;
     return (() => {
-      const x = findArr.length;
+      const tmpMsg = blockArr[index].props.nm;
+      const hashBox = this.blockNameHash[hashStr(tmpMsg) % this.blockNameHash.length];
+      const indexOut = hashBox.findIndex(elem => (elem.name === tmpMsg));
+      let x = hashBox.length - 1;
+      if (indexOut !== x) {
+        hashBox[indexOut].name = hashBox[x].name;
+        hashBox[indexOut].location = hashBox[x].location;
+        hashBox[indexOut].index = hashBox[x].index;
+      }
+      hashBox.pop();
+
+      x = findArr.length;
       if (x > 0) for (let i = 0; i < x; i += 1) {
         if ((typeof findArr[i] !== 'undefined') &&
             (blockArr[index].props.del === findArr[i].props.del)) { delete findArr[i]; break; }
@@ -177,12 +202,24 @@ class INApp extends React.Component {
   delGroup(index) {
     const { groupArr, findDirArr } = this.state;
     return (() => {
-      const tmpMsg = groupArr[index].props.nm;
-      const hashBox = this.dirNameHash[hashStr(tmpMsg) % this.dirNameHash.length];
-      const indexOut = hashBox.findIndex(elem => (elem === tmpMsg));
+      const { nm, elementArr } = groupArr[index].props;
+      let hashBox = this.dirNameHash[hashStr(nm) % this.dirNameHash.length];
+      let indexOut = hashBox.findIndex(elem => (elem === nm));
       let x = hashBox.length - 1;
       if (indexOut !== x) hashBox[indexOut] = hashBox[x];
       hashBox.pop();
+      for (let i = 0, y = elementArr.length, str = ''; i < y; i += 1) {
+        str = elementArr[i].nm;
+        hashBox = this.blockNameHash[hashStr(str) % this.blockNameHash.length];
+        indexOut = hashBox.findIndex(elem => (elem.name === str));
+        x = hashBox.length - 1;
+        if (indexOut !== x) {
+          hashBox[indexOut].name = hashBox[x].name;
+          hashBox[indexOut].location = hashBox[x].location;
+          hashBox[indexOut].index = hashBox[x].index;
+        }
+        hashBox.pop();
+      }
 
       x = findDirArr.length;
       if (x > 0) for (let i = 0; i < x; i += 1) {
@@ -196,16 +233,24 @@ class INApp extends React.Component {
     });
   }
 
-  transBlock(tmpMsg) {
+  transBlock(dirName) {
     const { blockArr } = this.state;
-    const s = blockArr.length;
-    for (let i = 0; i < s; i += 1) {
-      if ((typeof blockArr[i] !== 'undefined') && (tmpMsg === blockArr[i].props.nm)) {
-        const tmpBlock = blockArr[i];
-        blockArr[i].props.del();
+    return (tmpMsg => {
+      const hashBox = this.blockNameHash[hashStr(tmpMsg) % this.blockNameHash.length];
+      const searchOut = hashBox.find(
+        (elem, index, arr) => ((elem.name === tmpMsg) && (elem.location === 'the base'))
+      );
+      if (typeof searchOut !== 'undefined') {
+        const tmpBlock = blockArr[searchOut.index];
+        blockArr[searchOut.index].props.del();
+        hashBox.push({
+          name: tmpMsg,
+          location: `Directory ${dirName}`,
+          index: 0,
+        });
         return tmpBlock;
       }
-    }
+    });
   }
 
   pushAfterPull(extrBlock) {
@@ -226,6 +271,11 @@ class INApp extends React.Component {
     }).then(res => res.json())
     .then(dataIn => {
       const id = blockArr.length;
+      const hashBox = this.blockNameHash[hashStr(nm) % this.blockNameHash.length];
+      const indexOut = hashBox.findIndex(elem => (elem.name === nm));
+      hashBox[indexOut].location = 'the base';
+      hashBox[indexOut].index = id;
+
       blockArr.push(
         <INObj
           key={`base block ${id}`}
@@ -276,7 +326,7 @@ class INApp extends React.Component {
               hashKey={dataIn._id}
               nm={tmpMsg}
               elementArr={[]}
-              fetcher={this.transBlock}
+              fetcher={this.transBlock(tmpMsg)}
               pushAfterPull={this.pushAfterPull}
               del={this.delGroup(id)}
             />
@@ -328,9 +378,22 @@ class INApp extends React.Component {
             />
           );
           this.blockHashKey.push(dataIn._id);
+          this.blockNameHash[hashStr(this.keptStr) % this.blockNameHash.length].push({
+            name: this.keptStr,
+            location: 'the base',
+            index: id,
+          });
           this.setState({});
         }).catch(e => console.log('error: objPush went wrong', e));
-      } else this.keptStr = tmpMsg;
+      } else {
+        const hashBox = this.blockNameHash[hashStr(tmpMsg) % this.blockNameHash.length];
+        const searchOut = hashBox.find((elem, index, arr) => (elem.name === tmpMsg));
+        if (typeof searchOut !== 'undefined') {
+          window.alert(`Bookmark ${tmpMsg} already exists in ${searchOut.location}!`);
+          return;
+        }
+        this.keptStr = tmpMsg;
+      }
       this.setState({ isURL: (isURL === false) });
     }
   }

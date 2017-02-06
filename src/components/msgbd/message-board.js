@@ -158,8 +158,27 @@ class MessageBoard extends Component {
     return (() => {
       const confirm = window.confirm('Are you sure to delete this message?');
       if (confirm) {
+        const x = blockArr.length;
         fetch(`/api/message_blocks/${this.blockHashKey[index]}`, { method: 'DELETE' })
         .catch(e => console.log('error: msgDel went wrong', e));
+        for (let i = index + 1, j = blockArr[index].props.orderIn; i < x; i += 1) {
+          if (typeof blockArr[i] !== 'undefined') {
+            const { user, textIn, visitorIn, timeIn, emotionIn, del } = blockArr[i].props;
+            blockArr[i] = (
+              <MessageBlock
+                key={`message-left number ${i}`}
+                user={user}
+                orderIn={j}
+                textIn={textIn}
+                visitorIn={visitorIn}
+                timeIn={timeIn}
+                emotionIn={emotionIn}
+                del={del}
+              />
+            );
+            j += 1;
+          }
+        }
         delete blockArr[index];
         this.setState({});
       }

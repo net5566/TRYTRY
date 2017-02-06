@@ -21,6 +21,37 @@ function diff(m, nm) {
   return true;
 }
 
+function hashStr(str) {
+  if (typeof str !== 'string') return false;
+  let rslt = 0;
+  const x = str.length;
+  for (let i = 0; i < x; i += 1) {
+    rslt = ((rslt << 5) - rslt) + (str.charCodeAt(i));
+    rslt |= 0;
+  }
+  return ((rslt < 0) ?(-rslt) :rslt);
+}
+
+function getHashSize(estimate) {
+  if (estimate < 8) return 7;
+  if (estimate < 16) return 13;
+  if (estimate < 32) return 31;
+  if (estimate < 64) return 61;
+  if (estimate < 128) return 127;
+  if (estimate < 512) return 509;
+  if (estimate < 2048) return 1499;
+  if (estimate < 8192) return 4999;
+  if (estimate < 32768) return 13999;
+  if (estimate < 131072) return 59999;
+  if (estimate < 524288) return 100019;
+  if (estimate < 2097152) return 300007;
+  if (estimate < 8388608) return 900001;
+  if (estimate < 33554432) return 1000003;
+  if (estimate < 134217728) return 3000017;
+  if (estimate < 536870912) return 5000011;
+  return 7000003;
+}
+
 class INApp extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +67,8 @@ class INApp extends React.Component {
     this.keptStr = '';
     this.findKey = '';
     this.blockHashKey = new Array();
+    this.dirNameHash = new Array();
+    this.blockNameHash = new Array();
     this.account = jwt_decode(localStorage.getItem('token')).sub;
 
     this.imgClass = this.imgClass.bind(this);
@@ -54,19 +87,25 @@ class INApp extends React.Component {
     fetch(`/api/in_app/dirs/${this.account}`)
     .then(res => res.json())
     .then(dataIn => {
+      let tmpStr = '';
+      const x = dataIn.length;
+      const y = getHashSize(x);
       const { groupArr } = this.state;
-      for (let i = 0, j = dataIn.length; i < j; i += 1) {
+      for (let i = 0; i < y; i += 1) this.dirNameHash.push(new Array());
+      for (let i = 0, x = dataIn.length; i < x; i += 1) {
+        tmpStr = dataIn[i].nm;
         groupArr.push(
           <INDir
             key={`base group ${i}`}
             hashKey={dataIn[i]._id}
-            nm={dataIn[i].nm}
+            nm={tmpStr}
             elementArr={dataIn[i].elementArr}
             fetcher={this.transBlock}
             pushAfterPull={this.pushAfterPull}
             del={this.delGroup(i)}
           />
         );
+        this.dirNameHash[hashStr(tmpStr) % y].push(tmpStr);
       }
       this.setState({});
     }).catch(e => console.log('error: dirInit went wrong', e));
@@ -74,17 +113,23 @@ class INApp extends React.Component {
     fetch(`/api/in_app/objs/${this.account}`)
     .then(res => res.json())
     .then(dataIn => {
+      let tmpStr = '';
+      const x = dataIn.length;
+      const y = getHashSize(x);
       const { blockArr } = this.state;
-      for (let i = 0, j = dataIn.length; i < j; i += 1) {
+      for (let i = 0; i < y; i += 1) this.blockNameHash.push(new Array());
+      for (let i = 0; i < x; i += 1) {
+        tmpStr = dataIn[i].nm;
         blockArr.push(
           <INObj
             key={`base block ${i}`}
-            nm={dataIn[i].nm}
+            nm={tmpStr}
             url={dataIn[i].url}
             del={this.delBlock(i)}
           />
         );
         this.blockHashKey.push(dataIn[i]._id);
+        this.blockNameHash[hashStr(tmpStr) % y].push(tmpStr);
       }
       this.setState({});
     }).catch(e => console.log('error: objInit went wrong', e));
@@ -132,7 +177,14 @@ class INApp extends React.Component {
   delGroup(index) {
     const { groupArr, findDirArr } = this.state;
     return (() => {
-      const x = findDirArr.length;
+      const tmpMsg = groupArr[index].props.nm;
+      const hashBox = this.dirNameHash[hashStr(tmpMsg) % this.dirNameHash.length];
+      const indexOut = hashBox.findIndex(elem => (elem === tmpMsg));
+      let x = hashBox.length - 1;
+      if (indexOut !== x) hashBox[indexOut] = hashBox[x];
+      hashBox.pop();
+
+      x = findDirArr.length;
       if (x > 0) for (let i = 0; i < x; i += 1) {
         if ((typeof findDirArr[i] !== 'undefined') &&
             (groupArr[index].props.del === findDirArr[i].props.del)) { delete findDirArr[i]; break; }
@@ -196,6 +248,14 @@ class INApp extends React.Component {
       e.target.value = '';
       if (tmpMsg === '') return;
       if (ftnOn === 1) {
+        const hashBox = this.dirNameHash[hashStr(tmpMsg) % this.dirNameHash.length];
+        const searchOut = hashBox.find((elem, index, arr) => (elem === tmpMsg));
+        if (typeof searchOut === 'undefined') hashBox.push(tmpMsg);
+        else {
+          window.alert(`Directory ${tmpMsg} already exists!`);
+          return;
+        }
+
         const body = JSON.stringify({
           user: this.account,
           nm: tmpMsg,

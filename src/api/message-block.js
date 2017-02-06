@@ -14,7 +14,17 @@ messageBlockRouter.post('/', (req, res) => {
   const { user, visitorIn, textIn, emotionIn, timeIn } = req.body;
   MessageBlock.create({ user, visitorIn, textIn, emotionIn, timeIn }, (err, block) => {
     if (err) return res.status(500).send(err);
-    return res.json(block);
+    return res.json({ _id: block._id });
+  });
+});
+
+messageBlockRouter.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  MessageBlock.findByIdAndRemove(id, err => {
+    if (err) return res.status(500).send(err);
+    return res.json({
+      msgBack: `Message ${id} has been successfully removed.`,
+    });
   });
 });
 

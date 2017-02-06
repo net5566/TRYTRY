@@ -30,9 +30,10 @@ const MessageBlock = ({
   textIn,
   visitorIn,
   timeIn,
-  emotionIn
+  emotionIn,
+  del,
 }) => (
-  <div className={`MessageBlock ${isOdd(orderIn)} ${isMine(user, visitorIn)}`}>
+  <div className={`MessageBlock ${isOdd(orderIn)} ${isMine(user, visitorIn)}`} onClick={del}>
     <div className="MessageBody">
       "{textIn}", said {visitorIn}.
       <br /><br />
@@ -46,6 +47,7 @@ MessageBlock.defaultProps = {
   visitorIn: 'admin',
   timeIn: (new Date()).toString(),
   emotionIn: 'no preference',
+  del: (() => {}),
 };
 
 class MessageBoard extends Component {
@@ -72,8 +74,10 @@ class MessageBoard extends Component {
     };
     this.visitorText = '';
     this.visitorName = '';
+    this.blockHashKey = ['', ''];
 
     this.blockCreate = this.blockCreate.bind(this);
+    this.delBlock = this.delBlock.bind(this);
   }
 
   componentDidMount() {
@@ -91,8 +95,10 @@ class MessageBoard extends Component {
             visitorIn={dataIn[i].visitorIn}
             timeIn={dataIn[i].timeIn}
             emotionIn={dataIn[i].emotionIn}
+            del={this.delBlock(dataIn[i].user, dataIn[i].visitorIn, blockArr.length)}
           />
         );
+        this.blockHashKey.push(dataIn[i]._id);
       }
       this.setState({ nowTime: new Date() });
     }).catch(e => console.log('error: msgInit went wrong', e));
@@ -119,6 +125,7 @@ class MessageBoard extends Component {
           visitorIn={this.visitorName}
           timeIn={nowTime.toString()}
           emotionIn={emotionStr}
+          del={this.delBlock(accountId, this.visitorName, blockArr.length)}
         />
       );
       const body = JSON.stringify({
@@ -135,10 +142,27 @@ class MessageBoard extends Component {
         },
         method: 'POST',
         body,
+      }).then(res => res.json())
+      .then(dataIn => {
+        this.blockHashKey.push(dataIn._id);
       }).catch(e => console.log('error: msgPush went wrong', e));
       if (typeof this.textObj !== 'undefined') this.visitorText = this.textObj.target.value = '';
       if (typeof this.nameObj !== 'undefined') this.visitorName = this.nameObj.target.value = '';
       this.setState({ nowTime: new Date() });
+    });
+  }
+
+  delBlock(user, visitorIn, index) {
+    const { blockArr } = this.state;
+    if ((user !== accountId) && (visitorIn !== accountName)) return (() => {});
+    return (() => {
+      const confirm = window.confirm('Are you sure to delete this message?');
+      if (confirm) {
+        fetch(`/api/message_blocks/${this.blockHashKey[index]}`, { method: 'DELETE' })
+        .catch(e => console.log('error: msgDel went wrong', e));
+        delete blockArr[index];
+        this.setState({});
+      }
     });
   }
 
